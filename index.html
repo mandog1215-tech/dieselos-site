@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DieselOS — A Math-Based Custom Ubuntu for AI Game Development</title>
+<meta name="description" content="DieselOS is a math-based custom Ubuntu, built solely for AI-controlled game development. An Ubuntu core assembled from components; everything above it custom.">
+<style>
+  :root{
+    --charcoal:#17181a; --charcoal-2:#1f2023; --charcoal-3:#26272b;
+    --gold:#c8a24a; --gold-dim:#9a7d38; --ink:#ece7da; --ink-dim:#b7b1a1;
+    --line:#35322a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--charcoal);color:var(--ink);
+       font-family:Georgia,'Times New Roman',serif;line-height:1.65}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px}
+  header.site{border-bottom:1px solid var(--line);padding:18px 0}
+  header.site .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .wordmark{font-size:20px;letter-spacing:.34em;color:var(--ink);font-variant:small-caps}
+  .wordmark b{color:var(--gold);font-weight:normal}
+  nav a{margin-left:20px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim)}
+  nav a:hover{color:var(--gold);text-decoration:none}
+  .hero{text-align:center;padding:72px 0 58px;border-bottom:1px solid var(--line)}
+  .hero svg{margin-bottom:26px}
+  .hero h1{font-size:44px;font-weight:normal;letter-spacing:.22em;font-variant:small-caps}
+  .hero h1 span{color:var(--gold)}
+  .hero .tag{font-size:20px;color:var(--ink);margin-top:14px;font-style:italic}
+  .hero .star{color:var(--ink-dim);margin-top:16px;font-size:16px;max-width:620px;margin-left:auto;margin-right:auto}
+  section{padding:52px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:15px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+     font-weight:normal;margin-bottom:22px}
+  h2::after{content:"";display:block;width:52px;height:1px;background:var(--gold-dim);margin-top:10px}
+  p{margin-bottom:14px;color:var(--ink)}
+  p.dim, li.dim{color:var(--ink-dim)}
+  .stack{display:flex;flex-direction:column;gap:8px;margin:22px 0 8px}
+  .layer{border:1px solid var(--line);background:var(--charcoal-2);padding:13px 18px;
+         display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .layer .name{letter-spacing:.08em}
+  .layer .what{color:var(--ink-dim);font-size:14.5px;text-align:right}
+  .layer.ours{border-left:3px solid var(--gold)}
+  .layer.core{border-left:3px solid #6d6a5e}
+  .layer.borrowed{border-left:3px solid #3a3b3f;color:var(--ink-dim)}
+  .tag-who{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+           border:1px solid var(--gold-dim);padding:1px 7px;white-space:nowrap}
+  .tag-who.grey{color:var(--ink-dim);border-color:#4a4b4f}
+  .depths{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:20px 0 6px}
+  .depth{border:1px solid var(--line);background:var(--charcoal-2);padding:18px}
+  .depth.chosen{border-color:var(--gold-dim);background:var(--charcoal-3)}
+  .depth h3{font-size:16px;font-weight:normal;letter-spacing:.06em;margin-bottom:8px}
+  .depth p{font-size:14.5px;color:var(--ink-dim);margin:0}
+  .road{display:flex;flex-direction:column;gap:0;margin-top:6px}
+  .phase{display:flex;gap:18px;padding:15px 0;border-bottom:1px dashed var(--line)}
+  .phase:last-child{border-bottom:none}
+  .phase .mark{flex:0 0 108px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);padding-top:4px}
+  .phase .mark.todo{color:var(--ink-dim)}
+  .phase h3{font-size:17px;font-weight:normal;margin-bottom:3px}
+  .phase p{font-size:15px;color:var(--ink-dim);margin:0}
+  .status-box{border:1px solid var(--gold-dim);background:var(--charcoal-2);padding:20px 22px}
+  .status-box p{margin-bottom:8px}
+  .status-box p:last-child{margin-bottom:0}
+  .status-box .date{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  footer{padding:36px 0 46px;text-align:center;color:var(--ink-dim);font-size:14px}
+  footer .links{margin-bottom:10px}
+  footer .links a{margin:0 10px}
+  @media (max-width:560px){
+    .hero h1{font-size:32px}
+    .phase{flex-direction:column;gap:4px}
+    .layer .what{text-align:left}
+    nav a{margin-left:12px}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="wordmark">Diesel<b>OS</b></div>
+    <nav>
+      <a href="#system">The System</a>
+      <a href="#method">The Method</a>
+      <a href="#road">The Road</a>
+      <a href="#origins">Origins</a>
+      <a href="#status">Status</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="The DieselOS medallion: an aged-gold ring, a fine cross, and a centre point">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#c8a24a" stroke-width="3"/>
+      <circle cx="60" cy="60" r="44" fill="none" stroke="#c8a24a" stroke-width="1"/>
+      <line x1="60" y1="14" x2="60" y2="106" stroke="#c8a24a" stroke-width="1.5"/>
+      <line x1="14" y1="60" x2="106" y2="60" stroke="#c8a24a" stroke-width="1.5"/>
+      <circle cx="60" cy="60" r="5" fill="#c8a24a"/>
+    </svg>
+    <h1>Diesel<span>OS</span></h1>
+    <p class="tag">A math-based custom Ubuntu, built solely for AI-controlled game development.</p>
+    <p class="star">Its ultimate goal is maximum freedom and ease for AI game development.
+       An Ubuntu core, assembled by our own scripts from individual components — and everything
+       above that core is ours: the face, the tools, the mathematics, and in time our own language.</p>
+  </div>
+</div>
+
+<section id="system">
+  <div class="wrap">
+    <h2>The System</h2>
+    <p>DieselOS is a working environment for one developer — an AI agent — maintained by
+       <a href="https://mandog1215-tech.github.io/section-zero/">Section Zero Interactive</a>.
+       It is judged by its fruits: the games it makes possible, and how freely they can be made.
+       The machine is layered, and each layer is honest about whose it is.</p>
+    <div class="stack">
+      <div class="layer ours"><span class="name">Our language <span class="tag-who">Ours — planned</span></span>
+        <span class="what">A small, sharp language for simulation maths, designed before it is built</span></div>
+      <div class="layer ours"><span class="name">Programs &amp; tools <span class="tag-who">Ours</span></span>
+        <span class="what">The mathematics benches, the development kit, the instruments of proof</span></div>
+      <div class="layer ours"><span class="name">The Face <span class="tag-who">Ours</span></span>
+        <span class="what">Our splash, our login, our Home Screen — charcoal and aged gold</span></div>
+      <div class="layer ours"><span class="name">The boot chain <span class="tag-who">Ours</span></span>
+        <span class="what">Bootloader configuration, early-boot environment, identity</span></div>
+      <div class="layer core"><span class="name">The Ubuntu core <span class="tag-who grey">Ubuntu</span></span>
+        <span class="what">Ubuntu 24.04, minimal and pinned — kernel, libraries, package stack</span></div>
+      <div class="layer borrowed"><span class="name">Firmware &amp; hardware <span class="tag-who grey">Borrowed</span></span>
+        <span class="what">The machine's own firmware and devices — named honestly, not dressed as ours</span></div>
+    </div>
+    <p class="dim">The rule that governs the layers: custom wherever there is something to gain,
+       Ubuntu wherever it is commodity plumbing — and nothing fenced off. Drivers are written
+       by us when one serves the work; programs are ours without limit.</p>
+  </div>
+</section>
+
+<section id="method">
+  <div class="wrap">
+    <h2>The Method</h2>
+    <p>There are three honest depths at which a “custom Ubuntu” can be made. Research settled
+       which one is ours — and one thing first: <em>no</em> method is simultaneously Ubuntu,
+       built by its maker, and free of any download. Even the build-everything-from-source
+       path begins with a list of sources to fetch. Something is always fetched exactly once;
+       the question is in what form.</p>
+    <div class="depths">
+      <div class="depth">
+        <h3>Reskin a finished image</h3>
+        <p>Download Ubuntu whole, redecorate it, repack it. Fast — but nothing is really built,
+           and a borrowed desktop comes with it. Ruled out.</p>
+      </div>
+      <div class="depth chosen">
+        <h3>Assemble it from components — ours</h3>
+        <p>Start from an empty directory and build the system up from Ubuntu's package archive
+           with our own scripts: our package list, our configuration, our branding. Components
+           are fetched once, into our own local snapshot; every rebuild after that runs offline.
+           This is how the official Ubuntu flavours are themselves made.</p>
+      </div>
+      <div class="depth">
+        <h3>Compile everything from source</h3>
+        <p>The result is no longer Ubuntu — no Ubuntu kernel, no Ubuntu updates, no honest claim
+           to the name. A different mountain, and not this one.</p>
+      </div>
+    </div>
+    <p class="dim">“Math-based” is a discipline, not a species of system: the fast mathematics
+       libraries chosen deliberately (OpenBLAS, FFTW, GSL, NumPy/SciPy), thread counts pinned
+       so results reproduce bit-for-bit, and the studio's own analytic benches installed as
+       first-class citizens. Stock kernel — the low-latency variant exists for audio jitter,
+       not for mathematics, and it stays on the shelf.</p>
+  </div>
+</section>
+
+<section id="road">
+  <div class="wrap">
+    <h2>The Road</h2>
+    <div class="road">
+      <div class="phase">
+        <div class="mark">Phase A — Now</div>
+        <div><h3>The custom Ubuntu core</h3>
+        <p>The minimal, pinned system, assembled and proven booting on its own — size,
+           package count, and contents all measured and reported.</p></div>
+      </div>
+      <div class="phase">
+        <div class="mark todo">Phase B</div>
+        <div><h3>The Face</h3>
+        <p>Splash, login, and Home Screen, in the charcoal-and-gold identity — the designs were
+           proven on the bare-metal machine and transfer to the Ubuntu session.</p></div>
+      </div>
+      <div class="phase">
+        <div class="mark todo">Phase C</div>
+        <div><h3>The tools</h3>
+        <p>The mathematics benches and the development kit as first-class citizens of the
+           system, with the Home Screen reading real project state.</p></div>
+      </div>
+      <div class="phase">
+        <div class="mark todo">Capstone</div>
+        <div><h3>Our own language</h3>
+        <p>A language designed on paper first, for an AI developer writing game simulations —
+           compiling down to C so it rides the Ubuntu toolchain. Everything Ubuntu needs to
+           stay Ubuntu remains untouched.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="origins">
+  <div class="wrap">
+    <h2>Origins</h2>
+    <p>DieselOS began the same day it was named, as something more radical: a fully custom
+       operating system written from the metal up — its own boot chain, kernel, filesystem,
+       scheduler, and shell, built and proven in a single day, with a graphical login gate as
+       its third stage. It worked, and its proofs stand in the repository's history.</p>
+    <p>Then the ruling changed: the core would be Ubuntu, because the goal was never purity —
+       it was freedom and ease for the work itself. The bare-metal machine is banked with
+       honours, frozen exactly where it stood, its designs carried forward into the Face.
+       What it proved — that this studio can build at any layer it chooses — did not retire
+       with it.</p>
+  </div>
+</section>
+
+<section id="status">
+  <div class="wrap">
+    <h2>Status</h2>
+    <div class="status-box">
+      <p class="date">10 November 2026</p>
+      <p><strong>Phase A is in assembly.</strong> The custom Ubuntu core is being built by the
+         archive-assembly method, from a pinned manifest, on this page's principles.</p>
+      <p>The bare-metal DieselOS (Stages 1–3, including the login gate) is complete and banked
+         in the <a href="https://github.com/mandog1215-tech/DieselOS">repository</a>, where the
+         Ubuntu line is now being built in the open. This page follows the work and is updated
+         as each phase lands — never ahead of the evidence.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://github.com/mandog1215-tech/DieselOS">Repository</a> ·
+      <a href="https://mandog1215-tech.github.io/section-zero/">Section Zero Interactive</a>
+    </div>
+    <p>DieselOS is an internal development system of Section Zero Interactive.</p>
+  </div>
+</footer>
+
+</body>
+</html>
